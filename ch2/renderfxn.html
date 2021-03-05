@@ -1,0 +1,33 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<render-example></render-example>
+</div>
+<script>
+    /*
+    *Note that the templates created in the components are eventually converted to render functions, so..
+    *the render function itself takes the parameter h.
+    *function 'h' takes in three arguments, 1.name of the element,2.attributes of the element, 3.any element it would contain
+    *'h' would then render the elements via virtual DOM but only h() of the root is returned
+    */
+Vue.component('render-example',{
+render(h){
+return h('div',{
+attrs:{
+    class:'red',
+    id:'takos'
+}
+},[
+h('p',{
+    attrs:{
+        class:"para"
+    }
+},'blah')
+]
+);
+}
+});
+
+new Vue({
+    el:"#app",
+});
+</script>

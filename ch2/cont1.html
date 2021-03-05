@@ -1,0 +1,103 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<personal-button></personal-button>
+<color-preview color="red" w="100" h=100></color-preview>
+<positive-numbers></positive-numbers><br>
+<display-number v-bind:num="number"></display-number>
+</div>
+<script>
+/*COMPONENTS
+#what is a component? a component may refer to an element created or rather a template
+it may posses all the properties possessed by a vue instance*/
+
+//You may set it in the global namespace as so
+Vue.component('positive-numbers',{
+template: "<p>{{positiveNumbers.length}} positive numbers</p>",
+//components may posses data 'property' but NOTE it is a function reason being i don't know and
+//too tired to find out how.
+//Note to access the values as properties utilize return of an object with properties
+data(){
+    return{
+    numbers: [-1, -2, -3, 4, 5,6]
+    };
+},
+computed:{
+    positiveNumbers(){
+        return this.numbers.filter((number)=>number >= 0);
+    }
+}
+});
+
+/**
+* creating a component. The prop property is basically the values the component can take but note that
+* this values are mostly useful for filling inbuilt html attributes
+*/
+Vue.component('color-preview', {
+    template: '<div class="color-preview" :style="style"></div>',
+    props: ['color','h','w'],
+    computed: {
+        style(){
+            return {backgroundColor: this.color, width: this.w, height:this.h};
+        }
+    }
+});
+
+
+//In this example a component is added to the components property of the vue instance
+const PersonalButton = {
+    //the template to be used
+    template: '<button>Custom Button</button>'
+}
+
+/**
+* ____PROP VALIDATION_____
+* Besides just taking in props as placeholders awaiting values, the props may take default values and various constraints may be 
+* added to them
+* in this scenario the prop will not take any value besides the one constrained in its definition. Note that you can pass in a 
+* validator function(functions are objects in js thus a valid member in the parent object) that checks the value
+*/
+Vue.component('price-display',{
+    props:{
+        price: Number,
+        unit: String,
+        name: {
+            type: Number,
+            required: true,
+            validator(value){
+                return value >= 0;
+            }
+        },
+    }
+});
+
+/**
+* __REACTIVITY___
+*/
+Vue.component('display-number',{
+    template: '<p>The number is {{num}}</p>',
+    props:{
+        num:{
+            type: Number,
+            required: true,
+        }
+    }
+});
+
+
+new Vue({
+    el: '#app',
+    data: {
+        number: 0
+    },
+    created(){
+        setInterval(()=>{
+            this.number++;
+        },1000);
+    },
+    components:{
+        //pass the defined component name
+        PersonalButton
+    }
+});
+
+</script>

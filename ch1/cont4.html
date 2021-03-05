@@ -1,0 +1,93 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<p>Value:<input type="text" v-model="inputValue"></p>
+<p>The value five seconds ago was: {{oldInputValue}}</p>
+
+<p>Price of ProductOne: {{productOne|productCost('Ksh.')}}</p>
+<p>Price of ProductTwo: {{productTwo|productCost('Ksh.')}}</p>
+<p>Price of ProductThree: {{productThree|productCost('Ksh.')}}</p>
+
+<p>
+    <!--INPUTS AND EVENTS. You may also use the @click="increase" shorthand-->
+    <button v-on:click="count();">Click to Count</button>
+    <p>This button has been clicked: {{counter}} times</p>
+</p>
+
+<p>
+    <select name="" id="" v-model="inputValue">
+        <option value="blah1">blah1</option>
+        <option value="blah2">blah2</option>
+    </select>
+    {{inputValue}}
+    {{inputInfo()}}
+</p>
+</div>
+
+<script>
+//using WATCHERS for asynchronous apps
+new Vue({
+    el: "#app",
+    data:{
+        counter: 0,
+        inputValue: undefined,
+        oldInputValue: "",
+        formData:{
+            username: ""
+        },
+        productOne: 334,
+        productTwo: 445,
+        productThree: 44555
+    },
+    //Note that the name of the watcher method must be the same as that of propertie of the data 
+    //object being watched
+    methods:{
+        //notice that ethe e argument represents the event object useful for knowing more about event
+        count(e){
+            
+            return this.counter++
+        },
+        inputInfo(){
+            console.log(this.inputValue);
+            
+        }
+    },
+    
+    watch:{
+        inputValue(newVal, oldVal){
+            //watchers are automaticall passed oldvalue and newValue into their two parameters as 
+            //arguments
+            //console.log(newVal+ " " +oldVal);
+            console.log("change!!");
+            const newValue = this.inputValue;
+            setTimeout(()=>{
+                this.oldInputValue = newValue;
+            },1000);
+        },
+        //To watch an object's property in the data object, syntax is as follows
+        'formData.username'(){
+            //this.formData.username has changed
+        },
+        //incase your want to watch an entire object and not just the properties(deep watching)
+        //then set the deep option to true
+        formData:{
+            handler(){
+                console.log(newVal, oldVal);
+            },
+            deep: true
+        }
+    },
+
+    //FILTER propertie. Use it to add filters thus reducing duplication. the filter created takes in
+    //as its argument the value on its left and another argument can be added only that it comes as
+    //the second argument
+    //Note that when calling productCOst you may or may not pass arguments,if no args just write
+    //...|productCost, otherwise ...|productCost(arg)
+    //also filters may be chained as follows
+    filters:{
+        productCost(value,symbol){
+            return symbol + (value/100).toFixed(2);
+        }
+    }
+
+});
+</script>

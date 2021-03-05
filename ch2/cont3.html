@@ -1,0 +1,38 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+
+    <p @click="handleClick">The number of clicks {{clicks}}</p>
+    <counter v-on:count="handleCount"></counter>
+    <p>Clicks = {{ clicks }}</p>
+</div>
+<script>
+//the counter component
+const Counter = {
+    template: '<section><button>blah</button><span></span></section>'
+}
+
+
+/**
+* CUSTOM EVENTS
+*/
+new Vue({
+    el: '#app',
+    data:{
+        clicks:0,
+    },
+    methods:{
+        handleClick(){
+            //this.clicks++;
+            this.$emit('count')
+        },
+        handleCount(){
+            this.clicks++;
+            console.log("eueueue");
+            //this.clicks = clicks;
+        }
+    },
+    components: {
+        Counter
+    }
+})
+</script>

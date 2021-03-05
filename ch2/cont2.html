@@ -1,0 +1,101 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<custom-button>Leo Boy</custom-button>
+<blog-post >
+    <!--Strongly NOTE that 'slot' is depracated and has been replaced by 'v-slot'-->
+    <blog-header :date="siku" slot="header">
+        <h2 slot="header">Chicken Farming</h2>
+    </blog-header>
+    
+    <p slot="main">Yeah this is where the main component sits</p>
+    <p>I am lost.</p>
+</blog-post>
+
+<div :style="{fontSize:postFontSize + 'em'}">
+<blog-listing v-for="post in posts"
+:post="post"
+:id="post.id"
+:title="post.title"
+:date="post.date"
+v-on:enlarge-text="postFontSize += 0.1"
+v-on:shrink-text="postFontSize -= 0.1">
+</blog-listing>
+
+</div>
+</div>
+<script>
+/**
+ * Passing content into components using slots
+ * You could do this using props but slots provides a more natural way. 
+ * Note that if data is passed within the slot in the component that data will be used as fallback, otherwise any data passed into the component
+ * in the html code will be placed in the position of the slot
+*/
+Vue.component('custom-button',{
+    template: '<button><slot>Thoughts & Prayers</slot></button>'
+
+});
+
+/**
+ * This header component will be used as a child of blog-post
+*/
+Vue.component('blog-header',{
+    template: '<header><slot name="header"></slot><p>Post by {{author.name}}<br> {{date}}</p> </header>',
+    props: ['date'],
+    
+    data(){
+        return{
+            author:{
+                name: 'Mwaura'
+            }
+        }
+    }
+});
+
+/**
+ * A Blog Post component that accepts slots
+ * With the named Slots youo can more easily add html to the component in the html code and specify in which slot it shall be placed
+ * Note that if a slot is un-named then html added to it will automaticall take that slot
+ * Note that in the example below the template is unnecesarrily long instead you could have as well broken it down into header, main and footer
+ * while letting the section tag have say three named slots to accomodate each
+*/
+
+Vue.component('blog-post', {
+    template:'<section><slot name="header"></slot> <main><slot name="main"></slot></main><footer><slot></slot></footer> </section>',
+
+});
+
+/**
+* Button to be used in blogListing
+*/
+Vue.component('listing-button', {
+    template: '<button>Enlarge Text</button>'
+})
+
+/**
+* lets Create a component that displays list of blogposts and their summary
+* Note that the hustle of defining several props can be overcome by carrying out the operation as laid down below
+*Also NOTE that the button child component emits an event when clicked which the parent listens to and can react to it
+*An optional argument can be passed to be emmited together with the event and can be used afterwards in the parent as $event
+*Also if a method instead is put on the listening parent, then value emitted will be automatically passed to the method expecting an argument
+*/
+Vue.component('blog-listing', {
+props: ['post'],
+template: '<p> id:{{post.id}}<br>{{post.title}}<br>{{post.date}} <button v-on:click="$emit(\'enlarge-text\')">Enlarge</button><button v-on:click="$emit(\'shrink-text\')">Shrink</button></p>',
+
+}); 
+
+new Vue({
+    el: '#app',
+    data: {
+        posts:[
+        {id: 1, title:'PostOne', date:"27th"},
+        {id: 2, title:'PostTwo', date:"28th"},
+        {id: 3, title:'PostThree', date:"29th"}
+        ],
+        author: 'Karani',
+        siku: "19 Dec 2020",
+        postFontSize: 1
+    }
+});
+
+</script>

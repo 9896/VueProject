@@ -1,0 +1,51 @@
+<!--not for transiton timing function you can use ease, ease-in, ease-out,ease-in-out-->
+<style>
+div.hide{
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 40px;
+    left: -100px;
+    transition: left 0.5s;
+}
+
+div{
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 40px;
+    left: 10px;
+    transition-duration: 1s;
+    transition-timing-function: linear; 
+}
+
+div.two{
+    margin-top: 150px;
+    transition-property: width,height;
+    transition-duration: 2s;
+    transition-timing-function: ease-in; 
+    transition-delay: 1s;
+}
+
+div.two:hover{
+width: 300px;
+height: 300px;
+}
+</style>
+<p><button>Bring Div</button></p>
+<div class="one hide">
+
+</div>
+
+<div class="two">
+
+</div>
+<script>
+ var button = document.getElementsByTagName('button');
+ button[0].addEventListener('click',()=>{
+    var div = document.getElementsByTagName('div');
+    div[0].classList.remove('hide');
+ },false);
+</script>

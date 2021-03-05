@@ -1,0 +1,64 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<!--EVENT MODIFIERS-->
+
+<!--prevent the default behaviour-->
+<div @click.prevent="handleclick"></div>
+<!--Stop propagation to the parent-->
+<div @click.stop="handleclick"></div>
+<!--Event listener triggered only the first time the event is triggered-->
+<div @click.once="handleclick"></div>
+<!--Prevent the capture effect, meaning event will be triggered on this element before its dispatched to those
+below it-->
+<div @click.capture="handleclick"></div>
+<!--trigger the handler when the event is triggered on the element and not on a child(target be owner of handler-->
+<div @click.self="handleclick"></div>
+<!--Feel free to chain modifiers.Note there's no need for a value-->
+<div @click.stop.once></div>
+
+<!--In addition there are key modifiers i.e pressing a certain key fires an event. Note there are aliases
+.esc .enter .shift .tab .ctrl .alt .meta(window key) .delete. And also mouse keys exist, .left .middle .right-->
+<div @keyup.esc = "handleEscape"></div>
+
+<!--LIFE CYCLE HOOKS.-->
+<!--this refers to a series of functions that are executed from the moment a component
+    is created to the time it is destroyed. No comprehensive e.g given so am not writing it-->
+
+<!--CUSTOM DIRECTIVES-->
+<!--besides existing directives you can create your own,but you will want to use function hooks-->
+
+<p v-blink>This bitch will blink {{name}}</p>
+</div>
+<script>
+    //setting the directive in the global scope
+Vue.directive('blink',{
+    bind(el){
+        let isVisible = true;
+        setInterval(()=>{
+            isVisible = !isVisible;
+            el.style.visibilty = isVisible ? 'visible' : 'hidden';
+        },2000);
+    }
+});
+new Vue({
+    el: "#app",
+    
+    data:{
+        name: "blah"
+    },
+    //adding directive specifically to directives property
+    directives:{
+        blink:{
+        inserted: function(el){
+            let isVisible = true;
+        setInterval(()=>{
+            isVisible = !isVisible;
+            el.style.visibilty = isVisible ? 'visible' : 'hidden';
+        },100);
+        }
+
+    }
+    }
+});
+
+</script>

@@ -1,0 +1,96 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<p>
+    <input type="text" v-model="inputText" value="Onother"></input>
+    <p>The input data is: {{inputText}}</p>
+
+</p>
+
+<p>
+<label for=""><input type="radio" v-model="value" value="one"></label>
+<label for=""><input type="radio" v-model="value" value="two"></label>
+<label for=""><input type="radio" v-model="value" value="three"></label>
+<p>The radio button value is: {{value}}</p>
+</p>
+
+<p>
+    <label for=""><input type="checkbox" v-model="ab" value="pizza"></label>
+    <label for=""><input type="checkbox" v-model="bb" value="ugali"></label>
+    <label for=""><input type="checkbox" v-model="cb" value="mayai"></label>
+    <p>The checkbox value is: {{ab}}, {{bb}}, {{cb}}</p>
+    </p>
+
+    <p>
+       <select v-model="az" name="" id="">
+           <option  value="large">large</option>
+           <option  value="medium">medium</option>
+           <option value="small">small</option>
+       </select>
+        <p>The select box value is: {{az}}</p>
+        </p>
+
+        <p>The id is: {{getId()}}</p>
+
+        <p>The total addition of the numbers is {{numbersTotal()}}</p>
+        <p>The total addition of the numbers is {{numbersTotal()}}</p>
+        <p>The total addition of the numbers is {{numbersTotal()}}</p>
+        
+
+</div>
+<script>
+    //____REACTIVITY IN INPUT ELEMENTS_____
+    //Note select box wont work, check on correct syntax
+    //(though not advisable)After fetching html place it in div that has v-html directive to display it
+new Vue({
+    el: "#app",
+    data:{
+        numbers: [1,2,3,4,5],
+        status: 2,
+        inputText: "Initial text",
+        value: undefined,
+        ab: "true",
+        bb: "",
+        cb: "",
+
+        az: "small",
+        bz: "",
+        cz: ""
+    },
+    //let us add functions that can be used within the template itself
+    //this is accomplished by adding the function to the method object
+    //Note methods can be used anywhere you can use javascript including in bound attributes
+    //Notice that this can be used to reffer to attributes in the data object or even other methods
+    methods:{
+        getId(){
+            const status=({
+                0: "zero",
+                1: "one",
+                2: "two"
+            })[this.status];
+            return status + " :" + this.sayHi() || "Unknown index:"+ id;
+        },
+
+        sayHi(){
+            return "hello mr index";
+        },
+
+        numbersTotal(){
+            console.log("numbersTotal method");
+            return this.numbers.reduce((acc, curr)=> acc + curr);
+        }
+
+    },
+    //We then look at COMPUTED PROPERTIES which is like a cross between methods and data objects
+    //they are for more complex functionalities, they do not accept arguments, are defined as fxns
+    //but can also take a propertie to object look.
+    //strongly note that unlike a method computed properties are CACHED
+    computed:{
+        numbersTotal(){
+            console.log("numbersTotal property");
+            return this.numbers.reduce((acc, curr)=> acc + curr);
+        }
+    }
+
+});
+
+</script>

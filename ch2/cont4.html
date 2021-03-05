@@ -1,0 +1,57 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<custom-input 
+v-model="n">
+</custom-input>
+<p>{{n}}</p>
+</div>
+
+<script>
+/**
+*V-MODEL and components
+*Note that this is two way data binding on components. Below is what v-model actually does in a more understandable way
+*<input v-bind:value="searchText" v-on:input="searchText = $event.target.value">
+*<custom-input v:bind:value="searchText" v-on:input="searchText =$event"></custom-input>
+*
+*/
+Vue.component('custom-input', {
+    props:['value'],
+    template: '<input type="text" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)">'
+});
+
+/*
+*MIXINS
+*
+*/
+var myMixin = {
+    created: function(){
+        this.hello()
+    },
+    methods: {
+        hello:function(){
+            console.log("Hello from mixin!")
+        },
+        bye:function(){
+            console.log("Bye from mixin!")
+        }
+    },
+    computed:{
+        cry:function(){
+            console.log("buhuhu")
+        }
+    }
+}
+//define a component that uses this mixin
+var Component = Vue.extend({
+    mixins: [myMixin]
+})
+var component = new Component()
+component.cry;
+
+new Vue({
+    el: "#app",
+    data:{
+        n:"blaah"
+    }
+});
+</script>

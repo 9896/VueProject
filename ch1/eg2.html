@@ -1,0 +1,62 @@
+<script src="../js/vue.js"></script>
+<div id="app">
+<p>
+    {{greetings}}
+</p>
+<p v-if="mood == 'sad'">Am sad</p>
+<p v-else>Am happy</p>
+<p>The first dog is {{dogs[0]}}</p>
+<p>All the dogs are {{dogs}}</p>
+<div v-if="user">
+<p>User name is {{user.name}}</p>
+</div>
+<!--Testing the loop functionality for array and associative array-->
+<ul>
+    <li v-for="dog in dogs">{{dog}}</li>
+</ul>
+<ul>
+    <li v-for="(rent, city) in rents">In {{city}} the rent is ksh.{{rent}}</li>
+</ul>
+<!--A simple counter as such-->
+<b v-for="n in 10">{{n}}, </b>
+<!--Examining v-bind, Note it takes an argument and passes a value to it, or use the : shorthand-->
+<p>
+    <input v-bind:type="buttonType" :value="buttonValue" :disabled="state"></input>
+</p>
+<p>
+    Seconds elapsed since opening this page {{seconds}}
+</p>
+</div>
+<script>
+//this is called interpolation
+//Note that using v-show employs css display property, in the example above
+//using it causes an error user.name does not exist, v-if would have been better
+//as the html could have never been made in the first place
+//____REACTIVITY____
+new Vue({
+    el: '#app',
+    data:{
+        state: true,
+        seconds: 0,
+        greetings: "Hello world",
+        mood: "happy",
+        dogs: ["milo", "simba","rex"],
+        user: undefined,
+        rents:{
+            nairobi: 600,
+            mabera: 400,
+            mogadishu: 200
+        },
+        buttonType:"button",
+        buttonValue: "Submit"
+
+    },
+    created(){
+        setInterval(()=>{
+            this.seconds++,
+            this.state = !this.state
+            }, 1000);
+    }
+})
+</script>
+
